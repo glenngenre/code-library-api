@@ -1,0 +1,47 @@
+# Build output
+*.exe
+*.exe~
+bin/
+tmp/
+
+# Dependencies
+vendor/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.zed/*
+
+# Go
+*.out
+*.test
+go.work
+go.work.sum
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Logs
+logs
+*.log
+
+# Misc
+.air.toml

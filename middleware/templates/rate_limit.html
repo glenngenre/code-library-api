@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Rate Limited — Library of Code</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500&family=Gilda+Display&family=DM+Mono:wght@400&display=swap"
+            rel="stylesheet"
+        />
+        <!-- The CSS file is served at /static/rate_limit/style.css because the server is configured to serve static files from the /static/ path. -->
+        <link href="/static/rate_limit/style.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="card">
+            <div class="ornament">— ✦ —</div>
+            <h1>Patience, Reader</h1>
+            <p class="subtitle">
+                You have submitted too many requests in a short span.<br />The
+                archive will reopen its doors shortly.
+            </p>
+            <div class="time-box">
+                <div class="time" id="countdown">--:--</div>
+                <div class="time-label">Time Remaining</div>
+            </div>
+            <p class="retry-note">
+                Access resumes at <strong>{{ .ResumeTime }}</strong>.
+            </p>
+            <div class="footer">
+                origin &nbsp;/&nbsp; <code>{{ .IP }}</code>
+            </div>
+        </div>
+
+        <script>
+            const unblockTimeMs = {{ .UnblockTimeMs }};
+            const countdownEl = document.getElementById('countdown');
+
+            function updateTimer() {
+                const diff = unblockTimeMs - Date.now();
+
+                if (diff <= 0) {
+                    countdownEl.innerText = "0:00";
+                    window.location.reload();
+                    return;
+                }
+
+                const minutes = Math.floor(diff / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+
+                countdownEl.innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        </script>
+    </body>
+</html>
