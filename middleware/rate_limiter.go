@@ -18,6 +18,7 @@ import (
 	"github.com/glenngenre/code-paste-service/models"
 )
 
+//go:embed templates/rate_limit.html
 var templateFS embed.FS
 var tmpl *template.Template
 
