@@ -25,8 +25,8 @@ var staticFiles embed.FS
 // @title Code Paste Service API
 // @version 1.0
 // @description API for code snippet sharing service
-// @host codelibrary.skwtr.com
-// @BasePath /api
+// @host api.apps.skwtr.com
+// @BasePath /codelibrary/api
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
@@ -45,17 +45,25 @@ func main() {
 	r.Use(middleware.RateLimitMiddleware())
 
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	basePath := os.Getenv("BASE_PATH")
+	if basePath == "" {
+		basePath = ""
+	}
 
 	assets, err := fs.Sub(staticFiles, "static")
 	if err != nil {
 		log.Fatal("Failed to load embedded static files:", err)
 	}
-	r.StaticFS("/static", http.FS(assets))
+	r.StaticFS(basePath+"/static", http.FS(assets))
 
-	docs.SwaggerInfo.BasePath = "/api"
-	v1.RegisterRoutes(r)
+	docs.SwaggerInfo.BasePath = basePath + "/api"
+	v1.RegisterRoutes(r, basePath)
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.GET(basePath+"/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.Run(":" + port)
 }
 
