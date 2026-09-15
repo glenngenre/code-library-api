@@ -71,6 +71,7 @@ func setupCORS() gin.HandlerFunc {
 	return cors.New(cors.Config{
 		AllowOrigins: []string{
 			"https://codelibrary.skwtr.com",
+			"https://codelibrary.apps.skwtr.com",
 			"http://localhost:5173",
 			"http://localhost:8080",
 			"http://localhost",
